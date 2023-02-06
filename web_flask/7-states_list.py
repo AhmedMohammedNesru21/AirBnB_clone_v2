@@ -1,31 +1,22 @@
 #!/usr/bin/python3
-"""
-Script that starts a Flask web application
-"""
+""" flask model """
 from flask import Flask, render_template
 from models import storage
 from models.state import State
-
-
 app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def handle_teardow(self):
-    """
-    Después de cada solicitud, debe eliminar
-    la sesión actual de SQLAlchemy
-    """
+def teardown_data(self):
+    """ update data from source """
     storage.close()
 
 
 @app.route('/states_list', strict_slashes=False)
-def list_of_state():
-    """
-    Función llamada con la ruta /states_list
-    """
-    states = storage.all(State).values()
-    return render_template("7-states_list.html", states=states)
+def states_list():
+    """ /states_list path"""
+    states = storage.all(State)
+    return render_template('7-states_list.html', states=states)
 
 
 if __name__ == "__main__":
